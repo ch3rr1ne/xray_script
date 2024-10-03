@@ -36,9 +36,10 @@ function _kernel() {
 }
 #xrayr配置
 function _xrayr_config(){
+    mkdir /etc/XrayR/cert
     curl -H "Authorization: Bearer "${token}"" -Lo /etc/XrayR/cert/nanodesu.key "$key"
     curl -H "Authorization: Bearer "${token}"" -Lo /etc/XrayR/cert/Certificate.crt "$cer"
-	curl -H "Authorization: Bearer "${token}"" -Lo /etc/XrayR/config.json "$xrayr_config"
+	curl -H "Authorization: Bearer "${token}"" -Lo /etc/XrayR/config.yml "$xrayr_config"
 }
 #环境
 function _os() {
@@ -99,6 +100,7 @@ fi
     _xrayr_config
     sleep 0.2
     _kernel
+    clear
     _dashboard
     clear
     systemctl start XrayR
