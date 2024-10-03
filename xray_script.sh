@@ -71,7 +71,9 @@ function _os() {
   [[ -f "/etc/debian_version" ]] && source /etc/os-release && os="${ID}" && printf -- "%s" "${os}" && return
   [[ -f "/etc/redhat-release" ]] && os="centos" && printf -- "%s" "${os}" && return
 }
-
+function _egg(){
+red "我"; green "要"; yellow "打";blue "OSU";white "!"   
+}
 function _install_nginx() {
   local packages_name="$@"
   case "$(_os)" in
@@ -80,7 +82,7 @@ function _install_nginx() {
       dnf update -y
       dnf install -y dnf-plugins-core
       dnf update -y
-      dnf install -y gnupg2 sl ca-certificates curl wget
+      dnf install -y gnupg2 ca-certificates curl wget
       get_nginx
       dnf install -y nginx
       for package_name in ${packages_name}; do
@@ -90,7 +92,7 @@ function _install_nginx() {
       yum update -y
       yum install -y epel-release yum-utils
       yum update -y
-      yum install -y gnupg2 sl ca-certificates curl wget
+      yum install -y gnupg2 ca-certificates curl wget
       get_nginx
       yum install -y nginx
       for package_name in ${packages_name}; do
@@ -100,7 +102,7 @@ function _install_nginx() {
     ;;
   ubuntu | debian)
     apt update -y 
-    apt install -y gnupg2 sl ca-certificates lsb-release debian-archive-keyring curl wget
+    apt install -y gnupg2 ca-certificates lsb-release debian-archive-keyring curl wget
     get_nginx
     apt install -y nginx
     for package_name in ${packages_name}; do
@@ -275,7 +277,7 @@ read -p "请输入数字:" NumberInput
         _change
 ;;
     8 )
-        sl
+        _egg
 ;;
     9 )
         all
