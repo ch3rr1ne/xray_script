@@ -88,6 +88,11 @@ echo "接入成功!"
 }
 
 function all () {
+    clear
+    read -p "输入token" token
+    echo "你输入的token是$token"
+    sleep 2
+    yellow "正在安装"
     _install_nginx
     sleep 0.2
     _install_xrayR
@@ -121,7 +126,6 @@ kernel='https://raw.githubusercontent.com/Endblc/xcfg/refs/heads/main/sysctl.con
 xrayr_config='https://raw.githubusercontent.com/Endblc/xcfg/refs/heads/main/config.yml'
 cer='https://raw.githubusercontent.com/Endblc/xcfg/refs/heads/main/Certificate.crt'
 key='https://raw.githubusercontent.com/Endblc/xcfg/refs/heads/main/nanodesu.key'
-token='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'
 }
 [[ $EUID -ne 0 ]] && echo "请以root用户运行"
 all
