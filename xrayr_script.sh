@@ -1,5 +1,6 @@
 #! /bin/bash
 # Write By Sone
+
 red(){
     echo -e "\033[31m\033[01m$1\033[0m"
     }
@@ -16,12 +17,6 @@ white(){
     echo -e "\033[37m\033[01m$1\033[0m"
 }
 
-#错误
-function _wrongNumber() {
-  red "吗的。填上面的数字啊"
-  exit 0
-}
-
 #获取最新nginx
 function get_nginx() {
 curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor > /usr/share/keyrings/nginx-archive-keyring.gpg
@@ -31,19 +26,19 @@ echo -e "Package: *\nPin: origin nginx.org\nPin: release o=nginx\nPin-Priority: 
 
 #nginx配置
 function _nginx_conf() {
-    curl -H "Authorization: Bearer "${token}"" -Lo /etc/nginx/nginx.conf "$nginx"
+    curl -H "Authorization: Bearer "$token"" -Lo /etc/nginx/nginx.conf "$nginx"
 }
 
 #内核优化
 function _kernel() {
-    curl -H "Authorization: Bearer "${token}"" -Lo /etc/sysctl.conf "$kernel"
+    curl -H "Authorization: Bearer "$token"" -Lo /etc/sysctl.conf "$kernel"
     sysctl -p
 }
 #xrayr配置
 function _xrayr_config(){
-    curl -H "Authorization: Bearer "${token}"" -Lo /etc/XrayR/cert/nanodesu.key "$key"
-    curl -H "Authorization: Bearer "${token}"" -Lo /etc/XrayR/cert/Certificate.crt "$cer"
-	curl -H "Authorization: Bearer "${token}"" -Lo etc/XrayR/config.json "$xrayr_config"
+    curl -H "Authorization: Bearer "$token"" -Lo /etc/XrayR/cert/nanodesu.key "$key"
+    curl -H "Authorization: Bearer "$token"" -Lo /etc/XrayR/cert/Certificate.crt "$cer"
+	curl -H "Authorization: Bearer "$token"" -Lo /etc/XrayR/config.json "$xrayr_config"
 }
 #环境
 function _os() {
@@ -75,7 +70,7 @@ function _dashboard(){
     fi
 echo "你输入的面板ID为 $dashid"
 
-    sed -i "20s/Values/${dashid}/g" /etc/XrayR/config.yml
+    sed -i "20s/Values/$dashid/g" /etc/XrayR/config.yml
 
     read -p "请输入 接入域名: " domain
     if [[ -z "$domain" ]]; then
@@ -88,8 +83,13 @@ echo "接入成功!"
 }
 
 function all () {
+    Endblc
     clear
-    read -p "输入token" token
+    read -p "输入token: " token
+if [[ -z "$token" ]]; then
+    red "Token 不能为空！"
+    exit 1
+fi
     echo "你输入的token是$token"
     sleep 2
     yellow "正在安装"
@@ -104,7 +104,7 @@ function all () {
     _kernel
     clear
     nginx -t
-    xrayr status
+    XrayR status
 }
 
 #卸载
@@ -127,5 +127,6 @@ xrayr_config='https://raw.githubusercontent.com/Endblc/xcfg/refs/heads/main/conf
 cer='https://raw.githubusercontent.com/Endblc/xcfg/refs/heads/main/Certificate.crt'
 key='https://raw.githubusercontent.com/Endblc/xcfg/refs/heads/main/nanodesu.key'
 }
-[[ $EUID -ne 0 ]] && echo "请以root用户运行"
+
+
 all
