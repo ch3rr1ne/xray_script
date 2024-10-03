@@ -186,9 +186,9 @@ function _uninstall (){
     xrayr uninstall
     rm /usr/bin/XrayR -f
 }
-#下载配置
+
+# 下载 nginx 和内核优化配置
 function _config(){
-    # 下载 nginx 和内核优化配置
     _nginx_conf
     _kernel
 if [[ -z "${xray_config}" ]]; then
