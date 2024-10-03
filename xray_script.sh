@@ -293,5 +293,5 @@ read -p "请输入数字:" NumberInput
         ;;
  esac
 }
-
+[[ $EUID -ne 0 ]] && echo "请以root用户运行"
 menu
