@@ -99,6 +99,7 @@ fi
     _xrayr_config
     sleep 0.2
     _kernel
+    _dashboard
     clear
     systemctl start XrayR
     systemctl enable XrayR
