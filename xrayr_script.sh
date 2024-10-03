@@ -44,7 +44,7 @@ function _xrayr_config(){
     curl -H "Authorization: Bearer "${token}"" -Lo /etc/XrayR/cert/nanodesu.key "$key"
     curl -H "Authorization: Bearer "${token}"" -Lo /etc/XrayR/cert/Certificate.crt "$cer"
 	curl -H "Authorization: Bearer "${token}"" -Lo etc/XrayR/config.json "$xrayr_config"
-
+}
 #环境
 function _os() {
   local os=""
