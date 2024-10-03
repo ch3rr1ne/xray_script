@@ -26,28 +26,25 @@ echo -e "Package: *\nPin: origin nginx.org\nPin: release o=nginx\nPin-Priority: 
 
 #nginx配置
 function _nginx_conf() {
-    curl -H "Authorization: Bearer "$token"" -Lo /etc/nginx/nginx.conf "$nginx"
+    curl -H "Authorization: Bearer "${token}"" -Lo /etc/nginx/nginx.conf "$nginx"
 }
 
 #内核优化
 function _kernel() {
-    curl -H "Authorization: Bearer "$token"" -Lo /etc/sysctl.conf "$kernel"
+    curl -H "Authorization: Bearer "${token}"" -Lo /etc/sysctl.conf "$kernel"
     sysctl -p
 }
 #xrayr配置
 function _xrayr_config(){
-    curl -H "Authorization: Bearer "$token"" -Lo /etc/XrayR/cert/nanodesu.key "$key"
-    curl -H "Authorization: Bearer "$token"" -Lo /etc/XrayR/cert/Certificate.crt "$cer"
-	curl -H "Authorization: Bearer "$token"" -Lo /etc/XrayR/config.json "$xrayr_config"
+    curl -H "Authorization: Bearer "${token}"" -Lo /etc/XrayR/cert/nanodesu.key "$key"
+    curl -H "Authorization: Bearer "${token}"" -Lo /etc/XrayR/cert/Certificate.crt "$cer"
+	curl -H "Authorization: Bearer "${token}"" -Lo /etc/XrayR/config.json "$xrayr_config"
 }
 #环境
 function _os() {
   local os=""
   [[ -f "/etc/debian_version" ]] && source /etc/os-release && os="${ID}" && printf -- "%s" "${os}" && return
   [[ -f "/etc/redhat-release" ]] && os="centos" && printf -- "%s" "${os}" && return
-}
-function _egg(){
-red "我"; green "要"; yellow "打";blue "OSU";white "!"   
 }
 function _install_nginx() {
     apt update -y 
@@ -70,7 +67,7 @@ function _dashboard(){
     fi
 echo "你输入的面板ID为 $dashid"
 
-    sed -i "20s/Values/$dashid/g" /etc/XrayR/config.yml
+    sed -i "20s/Values/"${dashid}"/g" /etc/XrayR/config.yml
 
     read -p "请输入 接入域名: " domain
     if [[ -z "$domain" ]]; then
@@ -78,7 +75,7 @@ echo "你输入的面板ID为 $dashid"
         _dashboard
     fi
 echo "你输入的域名为 $domain"
-    sed -i "79s/fake/${domain}/g" /etc/XrayR/config.yml
+    sed -i "79s/fake/"${domain}"/g" /etc/XrayR/config.yml
 echo "接入成功!"
 }
 
@@ -103,6 +100,8 @@ fi
     sleep 0.2
     _kernel
     clear
+    systemctl start XrayR
+    systemctl enable XrayR
     nginx -t
     XrayR status
 }
@@ -110,7 +109,7 @@ fi
 #卸载
 function _uninstall (){
   echo "卸载xrayR"
-    xrayr uninstall
+    XrayR uninstall
     rm /usr/bin/XrayR -f
 }
 
