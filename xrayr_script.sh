@@ -127,5 +127,4 @@ cer='https://raw.githubusercontent.com/Endblc/xcfg/refs/heads/main/Certificate.c
 key='https://raw.githubusercontent.com/Endblc/xcfg/refs/heads/main/nanodesu.key'
 }
 
-[[ $EUID -ne 0 ]] white "用Root用户运行"
 all
