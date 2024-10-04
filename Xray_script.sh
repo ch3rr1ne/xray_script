@@ -58,20 +58,20 @@ fi
     sleep 2
     blue "正在安装"
     _install_nginx
-    sleep 0.2
     _install_xray
-    _xray_config
-    systemctl restart xray
-    sleep 0.5
-    systemctl status xray
     sleep 0.2
+    _xray_config
     _kernel
+    sleep 0.2
+    systemctl restart xray
+    sleep 0.2
     clear
+    systemctl status xray
     systemctl status nginx && nginx -t
 }
 
 #卸载
-function _uninstall (){
+function uninstall (){
     bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ remove --purge
     systemctl stop nginx && apt purge -y nginx && rm -r /etc/systemd/system/nginx.service.d/
 }

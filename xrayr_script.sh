@@ -18,12 +18,10 @@ curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor > /usr/share/keyri
 echo "deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] http://nginx.org/packages/mainline/debian `lsb_release -cs` nginx" > /etc/apt/sources.list.d/nginx.list
 echo -e "Package: *\nPin: origin nginx.org\nPin: release o=nginx\nPin-Priority: 900\n" > /etc/apt/preferences.d/99nginx
 }
-
 #nginx配置
 function _nginx_conf() {
     curl -H "Authorization: Bearer "${token}"" -Lo /etc/nginx/nginx.conf "$nginx"
 }
-
 #内核优化
 function _kernel() {
     curl -H "Authorization: Bearer "${token}"" -Lo /etc/sysctl.conf "$kernel"
@@ -36,12 +34,7 @@ function _xrayr_config(){
     curl -H "Authorization: Bearer "${token}"" -Lo /etc/XrayR/cert/Certificate.crt "$cer"
 	curl -H "Authorization: Bearer "${token}"" -Lo /etc/XrayR/config.yml "$xrayr_config"
 }
-#环境
-function _os() {
-  local os=""
-  [[ -f "/etc/debian_version" ]] && source /etc/os-release && os="${ID}" && printf -- "%s" "${os}" && return
-  [[ -f "/etc/redhat-release" ]] && os="centos" && printf -- "%s" "${os}" && return
-}
+#安装nginx
 function _install_nginx() {
     apt update -y 
     apt install -y gnupg2 ca-certificates lsb-release debian-archive-keyring curl wget
@@ -53,7 +46,6 @@ function _install_nginx() {
 function _install_xrayR(){
     bash -c "$(curl -L https://raw.githubusercontent.com/XrayR-project/XrayR-release/master/install.sh)"
 }
-
 #接入面板
 function _dashboard(){
     read -p "请输入 面板ID: " dashid
@@ -88,14 +80,12 @@ fi
     sleep 2
     blue "正在安装"
     _install_nginx
-    sleep 0.2
     _install_xrayR
     sleep 0.2
     _nginx_conf
-    sleep 0.5
     _xrayr_config
-    sleep 0.2
     _kernel
+    sleep 0.2
     clear
     _dashboard
     clear
@@ -106,17 +96,10 @@ fi
 }
 
 #卸载
-function _uninstall (){
+function uninstall (){
   echo "卸载xrayR"
     XrayR uninstall
     rm /usr/bin/XrayR -f
-}
-
-# 下载 nginx 和内核优化配置
-function _config(){
-    _nginx_conf
-    _kernel
-    _xrayr_config
 }
 function Endblc (){
 nginx='https://raw.githubusercontent.com/Endblc/xcfg/refs/heads/main/nginx.conf'
