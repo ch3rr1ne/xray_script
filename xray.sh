@@ -1,6 +1,4 @@
 #! /bin/bash
-# Write By Sone
-#https://github.com/ch3rr1ne
 
 red(){
     echo -e "\033[31m\033[01m$1\033[0m"
