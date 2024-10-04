@@ -37,10 +37,19 @@ function _nginx_conf() {
     systemctl restart nginx
 }
 
-#内核优化
-function _kernel() {
-    curl -H "Authorization: Bearer "${token}"" -Lo /etc/sysctl.conf "$kernel"
-    sysctl -p
+# 选择配置
+function _config(){
+if [[ -z "$token" ]]; then
+    read -p "请先填入你的token: " token
+    _config
+fi
+    _nginx_conf
+if [[ -z "${xray_config}" ]]; then
+    _xrayr_config
+fi
+if [[ -z "${xrayr_config}" ]]; then
+    _xray_config
+fi
 }
 
 #xray 配置
@@ -62,6 +71,16 @@ read -p "请选择: [默认:VISION-TLS]" conf
     else 
 echo "选1或2"
     fi   
+}
+
+#内核优化
+function _kernel() {
+    if [[ -z "$token" ]]; then
+    read -p "请先填入你的token: " token
+    _kernel
+    fi
+    curl -H "Authorization: Bearer "${token}"" -Lo /etc/sysctl.conf "$kernel"
+    sysctl -p
 }
 
 #环境
@@ -143,10 +162,10 @@ echo "接入成功!"
 }
 
 function all () {
+read -p "请先填入你的token: " token
     _install_nginx
-    _kernel
     _nginx_conf
-
+    _kernel
     sleep 0.2
 if [[ -z "${xray_config}" ]]; then
     _install_xrayR
@@ -174,18 +193,6 @@ function _uninstall (){
     rm /usr/bin/XrayR -f
 }
 
-# 下载 nginx 和内核优化配置
-function _config(){
-    _nginx_conf
-    _kernel
-if [[ -z "${xray_config}" ]]; then
-    _xrayr_config
-fi
-if [[ -z "${xrayr_config}" ]]; then
-     _xray_config
-fi
-}
-
 function Sone (){
 nginx='https://raw.githubusercontent.com/ch3rr1ne/reality/refs/heads/main/nginx.conf'
 kernel='https://raw.githubusercontent.com/ch3rr1ne/reality/refs/heads/main/sysctl.conf'
@@ -204,7 +211,6 @@ key='https://raw.githubusercontent.com/Endblc/xcfg/refs/heads/main/nanodesu.key'
 function menu() 
 {
 clear
-read -p "请先填入你的token: " token
 blue "-----请先选择你的英雄-----"
 white " 1. Sone"
 white " 2. Endblc"
@@ -222,7 +228,7 @@ read -p "请选择:" hero
 esac
 clear
 blue " 1.  我全都要安装"
-green " 2. xray/nginx配置和内核调优"
+green " 2. xray/nginx配置"
 green " 3. 内核调优"
 green " 6. 接入面板"
 yellow " =================================================="
