@@ -70,11 +70,6 @@ fi
     systemctl status nginx && nginx -t
 }
 
-#卸载
-function uninstall (){
-    bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ remove --purge
-    systemctl stop nginx && apt purge -y nginx && rm -r /etc/systemd/system/nginx.service.d/
-}
 function Sone (){
 nginx='https://raw.githubusercontent.com/ch3rr1ne/reality/refs/heads/main/nginx.conf'
 kernel='https://raw.githubusercontent.com/ch3rr1ne/reality/refs/heads/main/sysctl.conf'
