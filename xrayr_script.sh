@@ -5,17 +5,11 @@
 red(){
     echo -e "\033[31m\033[01m$1\033[0m"
     }
-green(){
-    echo -e "\033[32m\033[01m$1\033[0m"
-    }
 yellow(){
     echo -e "\033[33m\033[01m$1\033[0m"
 }
 blue(){
     echo -e "\033[34m\033[01m$1\033[0m"
-}
-white(){
-    echo -e "\033[37m\033[01m$1\033[0m"
 }
 
 #获取最新nginx
@@ -67,7 +61,7 @@ function _dashboard(){
         red "面板ID不能为空！"
         _dashboard
     fi
-echo "你输入的面板ID为 $dashid"
+echo "你输入的面板ID为  $dashid"
 
     sed -i "20s/Values/"${dashid}"/g" /etc/XrayR/config.yml
 
@@ -76,8 +70,9 @@ echo "你输入的面板ID为 $dashid"
         red "域名不能为空！"
         _dashboard
     fi
-echo "你输入的域名为 $domain"
+echo "你输入的域名为  $domain"
     sed -i "79s/fake/"${domain}"/g" /etc/XrayR/config.yml
+    sleep 1.5
 echo "接入成功!"
 }
 
@@ -87,11 +82,11 @@ function all () {
     read -p "输入token: " token
 if [[ -z "$token" ]]; then
     red "Token 不能为空！"
-    exit 1
+    all
 fi
-    echo "你输入的token是$token"
+    yellow "你输入的token是 $token"
     sleep 2
-    yellow "正在安装"
+    blue "正在安装"
     _install_nginx
     sleep 0.2
     _install_xrayR
