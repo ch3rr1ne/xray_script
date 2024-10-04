@@ -95,12 +95,6 @@ fi
     XrayR status
 }
 
-#卸载
-function uninstall (){
-  echo "卸载xrayR"
-    XrayR uninstall
-    rm /usr/bin/XrayR -f
-}
 function Endblc (){
 nginx='https://raw.githubusercontent.com/Endblc/xcfg/refs/heads/main/nginx.conf'
 kernel='https://raw.githubusercontent.com/Endblc/xcfg/refs/heads/main/sysctl.conf'
