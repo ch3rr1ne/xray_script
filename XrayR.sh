@@ -87,6 +87,7 @@ fi
     clear
     _dashboard
     clear
+    yellow "Ciallo～(∠・ω< )⌒☆"
     systemctl start XrayR
     systemctl enable XrayR
     nginx -t
